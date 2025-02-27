@@ -20,7 +20,6 @@ const Login = () => {
             const response = await axios.post("http://localhost:3000/api/auth/gate/login", formData, {
                 withCredentials: true,  // Allow cookies to be sent
             });
-            console.log("Cookies after login:", document.cookie); // Debugging
 
             const { token } = response.data;
             localStorage.setItem("token", token);  // Store token
