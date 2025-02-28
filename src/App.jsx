@@ -1,4 +1,4 @@
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import GateRegistration from "./pages/GateRegistration";
 import Desk1 from "./pages/Desk1";
@@ -6,19 +6,21 @@ import Desk2 from "./pages/Desk2";
 import Desk3 from "./pages/Desk3";
 import Desk4 from "./pages/Desk4";
 import ProtectedRoute from "./components/ProtectedRoute";
-import "./index.css"
+import DeskLayout from "./components/DeskLayout"; // Import DeskLayout
+import "./index.css";
 
 const App = () => {
     return (
-       
-            <Routes>
-                <Route path="/" element={<Login />} />
+        <Routes>
+            <Route path="/" element={<Login />} />
 
-                {/* Protected Routes */}
-                <Route element={<ProtectedRoute allowedRoles={["gate"]} />}>
-                    <Route path="/gate" element={<GateRegistration />} />
-                </Route>
+            {/* Protected Routes */}
+            <Route element={<ProtectedRoute allowedRoles={["gate"]} />}>
+                <Route path="/gate" element={<GateRegistration />} />
+            </Route>
 
+            {/* Wrap desk pages inside DeskLayout */}
+            <Route element={<DeskLayout />}>
                 <Route element={<ProtectedRoute allowedRoles={["desk1"]} />}>
                     <Route path="/desk1" element={<Desk1 />} />
                 </Route>
@@ -34,9 +36,8 @@ const App = () => {
                 <Route element={<ProtectedRoute allowedRoles={["desk4"]} />}>
                     <Route path="/desk4" element={<Desk4 />} />
                 </Route>
-
-            </Routes>
-       
+            </Route>
+        </Routes>
     );
 };
 

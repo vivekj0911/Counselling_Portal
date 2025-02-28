@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import '../index.css'
-import { jwtDecode } from "jwt-decode"; // To decode token
+import "../index.css";
+import logo from "../assets/logo.png";
 
 const Login = () => {
     const [formData, setFormData] = useState({ username: "", password: "" });
@@ -16,43 +16,54 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
+        setError("");
+
         try {
-            const response = await axios.post("http://localhost:3000/api/auth/gate/login", formData, {
-                withCredentials: true,  // Allow cookies to be sent
+            await axios.post("http://localhost:3000/api/auth/login", formData, {
+                withCredentials: true, // Ensures cookies are sent
             });
 
-            const { token } = response.data;
-            localStorage.setItem("token", token);  // Store token
-            // Decode the token to get role
-            const decoded = jwtDecode(token);
-            const userRole = decoded.role;
-            navigate(`/${userRole}`);
-
+            // Fetch user role after successful login
+            const { data } = await axios.get("http://localhost:3000/api/auth/me", {
+                withCredentials: true,
+            });
+            console.log(data);
             
-           
+            navigate(`/${data.role}`);
         } catch (err) {
             setError(err.response?.data?.message || "Login failed");
         }
+
         setLoading(false);
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-sm">
-                <h2 className="text-xl font-semibold text-center mb-4">Login</h2>
+        <div
+            className="min-h-screen flex items-center justify-center"
+            style={{ background: "linear-gradient(135deg, #75141b, #af1734, #6b1218)" }}
+        >
+            <div
+                className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md"
+                style={{ boxShadow: "10px 10px 1px rgba(255, 255, 255, 0.45)" }}
+            >
+                <div className="text-center mb-8">
+                    <img src={logo} alt="Institute Logo" className="h-20 mx-auto mb-4" />
+                    <h2 className="text-2xl font-bold text-gray-800">
+                        Dr. D. Y. Patil Institute of Technology
+                    </h2>
+                </div>
 
-                {error && (
-                    <div className="bg-red-100 text-red-700 px-4 py-2 mb-4 rounded">
-                        {error}
-                    </div>
-                )}
+                {error && <div className="bg-red-100 text-red-700 px-4 py-2 mb-4 rounded">{error}</div>}
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
+                        <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
+                            Username
+                        </label>
                         <input
                             type="text"
                             name="username"
-                            placeholder="Username"
                             value={formData.username}
                             onChange={handleChange}
                             required
@@ -61,10 +72,12 @@ const Login = () => {
                     </div>
 
                     <div>
+                        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                            Password
+                        </label>
                         <input
                             type="password"
                             name="password"
-                            placeholder="Password"
                             value={formData.password}
                             onChange={handleChange}
                             required
@@ -75,7 +88,7 @@ const Login = () => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition disabled:opacity-50"
+                        className="mb-4 mt-2 w-full bg-red-700 text-white py-2 rounded-lg hover:bg-red-600 transition disabled:opacity-50"
                     >
                         {loading ? "Logging in..." : "Login"}
                     </button>
