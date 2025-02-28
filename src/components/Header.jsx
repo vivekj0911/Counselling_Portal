@@ -1,4 +1,3 @@
-import { Facebook, Instagram, Twitter } from "lucide-react";
 import LogoutButton from "./LogoutButton";
 import logo from "../assets/logo.png";
 
