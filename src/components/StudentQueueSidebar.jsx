@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Search, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom"; // ✅ Import for navigation
 
 const StudentQueueSidebar = () => {
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate(); // ✅ Hook for navigation
 
     useEffect(() => {
         const fetchStudents = async () => {
@@ -14,17 +16,13 @@ const StudentQueueSidebar = () => {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    credentials: "include", // ✅ Important: Allows cookies to be sent
+                    credentials: "include", // ✅ Allows cookies
                 });
-        
+
                 if (!response.ok) {
-                    if (response.status === 401) {
-                        throw new Error("Unauthorized: Please log in again.");
-                    } else {
-                        throw new Error("Failed to fetch students.");
-                    }
+                    throw new Error(response.status === 401 ? "Unauthorized: Please log in again." : "Failed to fetch students.");
                 }
-        
+
                 const data = await response.json();
                 setStudents(data);
             } catch (err) {
@@ -33,10 +31,13 @@ const StudentQueueSidebar = () => {
                 setLoading(false);
             }
         };
-        
 
         fetchStudents();
     }, []);
+
+    const handleStudentClick = (studentId) => {
+        navigate(`/desk1/${studentId}`); // ✅ Navigates to Desk1 with student ID
+    };
 
     return (
         <div className="w-64 h-screen bg-white border-r p-4 flex flex-col">
@@ -58,6 +59,7 @@ const StudentQueueSidebar = () => {
                             <div
                                 key={student._id}
                                 className="flex items-center justify-between bg-gray-100 p-3 rounded-lg cursor-pointer hover:bg-gray-200 transition"
+                                onClick={() => handleStudentClick(student._id)} // ✅ Handle click event
                             >
                                 <div>
                                     <div className="text-sm font-medium">{student.firstname} {student.lastname}</div>
