@@ -40,7 +40,7 @@ const StudentEntryForm = () => {
 
             if (response.status === 201) {
                 const { studId } = response.data; // ✅ Extract the generated token
-            setMessage(`✅ Student Registration Completed! Token: ${studId}`);
+            // setMessage(`✅ Student Registration Completed! Token: ${studId}`);
 
             // ✅ Display token in an alert window
             alert(`Your unique token: ${studId}\nPlease note it down for future reference.`);
@@ -50,6 +50,7 @@ const StudentEntryForm = () => {
                 setFormData({
                     firstName: "",
                     lastName: "",
+                    gender: "",
                     phone: "",
                     email: "",
                     purpose: "",
@@ -105,7 +106,7 @@ const StudentEntryForm = () => {
                             <select id="gender" name="gender" value={formData.gender} onChange={handleChange} required
                                 className="w-full px-3 py-2 border-2 border-gray-300 rounded-md focus:ring-1 focus:ring-gray-700 focus:border-gray-700 text-base bg-white"
                             >
-                                <option value="">Select Gender</option>
+                                <option value="" defaultChecked="male">Select Gender</option>
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
                                 <option value="other">Other</option>
