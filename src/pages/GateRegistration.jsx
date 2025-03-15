@@ -41,6 +41,10 @@ const GateRegistration = () => {
                 setMessage("✅ Student Registration Completed!");
                 setTimeout(() => setMessage(""), 3000);
 
+
+        // ✅ Notify the sidebar to add the new student
+        window.dispatchEvent(new CustomEvent("studentRegistered", { detail: { student: response.data } }));
+
                 // Clear form fields after successful registration
                 setFormData({
                     firstName: "",

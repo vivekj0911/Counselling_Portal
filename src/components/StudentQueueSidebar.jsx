@@ -33,6 +33,24 @@ const StudentQueueSidebar = () => {
         };
 
         fetchStudents();
+        // ✅ Listen for newly registered students
+        const handleStudentRegistered = (event) => {
+            setStudents((prevStudents) => [...prevStudents, event.detail.student]); // Append new student
+        };
+
+        // ✅ Listen for students moved to Desk2
+        const handleStudentMoved = (event) => {
+            setStudents((prevStudents) => prevStudents.filter((s) => s._id !== event.detail.studentId)); // Remove student
+        };
+
+        window.addEventListener("studentRegistered", handleStudentRegistered);
+        window.addEventListener("studentMoved", handleStudentMoved);
+
+        return () => {
+            window.removeEventListener("studentRegistered", handleStudentRegistered);
+            window.removeEventListener("studentMoved", handleStudentMoved);
+        };
+
     }, []);
 
     const handleStudentClick = (studentId) => {
