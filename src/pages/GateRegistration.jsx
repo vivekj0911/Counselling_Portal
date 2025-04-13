@@ -42,7 +42,7 @@ const GateRegistration = () => {
 
             {/* Form Section */}
             <div className="flex items-center justify-center flex-grow py-6 px-4">
-                <div className="bg-white shadow-md w-full max-w-3xl border border-gray-200 rounded-lg p-6">
+                <div className="bg-white shadow-md w-full max-w-3xl border border-gray-200 rounded-lg p-6 flex justify-center items-center">
                     {activeTab === "entry" && <StudentEntryForm />}
                     {activeTab === "exit" && <StudentExitForm />}
                     {activeTab === "revisit" && <RevisitForm />}

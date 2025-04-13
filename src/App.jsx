@@ -4,7 +4,6 @@ import GateRegistration from "./pages/GateRegistration";
 import Desk1 from "./pages/Desk1";
 import Desk2 from "./pages/Desk2";
 import Desk3 from "./pages/Desk3";
-import Desk4 from "./pages/Desk4";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DeskLayout from "./components/DeskLayout";
 import "./index.css";
@@ -37,9 +36,6 @@ const App = () => {
                     <Route path="/desk3" element={<Desk3 />} />
                 </Route>
 
-                <Route element={<ProtectedRoute allowedRoles={["desk4"]} />}>
-                    <Route path="/desk4" element={<Desk4 />} />
-                </Route>
             </Route>
         </Routes>
     );

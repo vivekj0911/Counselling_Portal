@@ -44,7 +44,8 @@ const StudentExitForm = () => {
     };
 
     return (
-        <div className="bg-white shadow-md w-full max-w-md border border-gray-200 rounded-lg p-6">
+        
+        <div className="bg-white shadow-md w-full max-w-md border border-gray-200 rounded-lg p-6 ">
             <h2 className="text-2xl font-semibold text-red-700 tracking-tight border-b pb-3">Student Exit</h2>
 
             {message && (
