@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import DeskLayout from "./components/DeskLayout";
 import "./index.css";
 
+
 const App = () => {
     return (
         <Routes>
@@ -30,10 +31,12 @@ const App = () => {
 
                 <Route element={<ProtectedRoute allowedRoles={["desk2"]} />}>
                     <Route path="/desk2" element={<Desk2 />} />
+                    <Route path="/desk2/:studentId" element={<Desk2 />} />
                 </Route>
 
                 <Route element={<ProtectedRoute allowedRoles={["desk3"]} />}>
                     <Route path="/desk3" element={<Desk3 />} />
+                    <Route path="/desk3/:studentId" element={<Desk3 />} />
                 </Route>
 
             </Route>

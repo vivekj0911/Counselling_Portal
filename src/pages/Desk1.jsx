@@ -9,6 +9,7 @@ const Desk1 = () => {
     const [student, setStudent] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    // Form data state
     const [formData, setFormData] = useState({
         fatherName: "",
         motherName: "",
@@ -29,8 +30,14 @@ const Desk1 = () => {
         hscTotalMarks: "",
         hscPercentage: "",
         jeeYear: "",
+        jeePhysics: "",
+        jeeChemistry: "",
+        jeeMaths: "",
         jeePercentage: "",
         cetYear: "",
+        cetPhysics: "",
+        cetChemistry: "",
+        cetMaths: "",
         cetPercentage: "",
         enrollmentId: "EN24",
         branch: "",
@@ -53,7 +60,6 @@ const Desk1 = () => {
                     withCredentials: true,
                 });
                 setStudent(response.data);
-                console.log(student);
 
             } catch (err) {
                 setError(err.response?.data?.message || "Failed to fetch student details");
@@ -66,7 +72,11 @@ const Desk1 = () => {
     }, [studentId]);
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value, type, checked } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: type === "checkbox" ? checked : value,
+        }));
     };
 
     const handleSubmit = async (e) => {
@@ -75,8 +85,6 @@ const Desk1 = () => {
             await axios.put(`http://localhost:3000/api/desk/1/update/${studentId}`, formData, {
                 withCredentials: true,
             });
-
-            alert("Student details updated! They are now at Desk2.");
 
 
             // ✅ Notify the queue sidebar that a student was processed
@@ -103,8 +111,14 @@ const Desk1 = () => {
                 hscTotalMarks: "",
                 hscPercentage: "",
                 jeeYear: "",
+                jeePhysics: "",
+                jeeChemistry: "",
+                jeeMaths: "",
                 jeePercentage: "",
                 cetYear: "",
+                cetPhysics: "",
+                cetChemistry: "",
+                cetMaths: "",
                 cetPercentage: "",
                 enrollmentId: "EN24",
                 branch: "",
@@ -145,11 +159,11 @@ const Desk1 = () => {
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="font-medium">Father's Name</label>
-                                    <input name="fatherName" type="text" className="input-field" onChange={handleChange} required />
+                                    <input name="fatherName" type="text" className="input-field" value={formData.fatherName} onChange={handleChange} required />
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="font-medium">Mother's Name</label>
-                                    <input name="motherName" type="text" className="input-field" onChange={handleChange} required />
+                                    <input name="motherName" type="text" className="input-field" value={formData.motherName} onChange={handleChange} required />
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="font-medium">Gender</label>
@@ -173,11 +187,11 @@ const Desk1 = () => {
                                 </div>
                                 <div className="col-span-2 flex flex-col">
                                     <label className="font-medium">Address</label>
-                                    <textarea name="address" rows="3" className="input-field resize-none" onChange={handleChange} required></textarea>
+                                    <textarea name="address" rows="3" className="input-field resize-none" value={formData.address} onChange={handleChange} required></textarea>
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="font-medium">Pin Code</label>
-                                    <input name="pinCode" type="text" maxLength={6} pattern="\d{6}" className="input-field" onChange={handleChange} required />
+                                    <input name="pinCode" type="text" maxLength={6} pattern="\d{6}" className="input-field" value={formData.pinCode} onChange={handleChange} required />
                                 </div>
                             </div>
                         </fieldset>
@@ -188,11 +202,11 @@ const Desk1 = () => {
                             <div className="grid grid-cols-2 gap-6">
                                 <div className="flex flex-col">
                                     <label className="font-medium">Nationality</label>
-                                    <input name="nationality" type="text" className="input-field" onChange={handleChange} required />
+                                    <input name="nationality" type="text" className="input-field" value={formData.nationality} onChange={handleChange} required />
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="font-medium">Category</label>
-                                    <input name="category" type="text" className="input-field" onChange={handleChange} required />
+                                    <input name="category" type="text" className="input-field" value={formData.category} onChange={handleChange} required />
                                 </div>
                             </div>
                         </fieldset>
@@ -203,23 +217,23 @@ const Desk1 = () => {
                             <div className="grid grid-cols-3 gap-6">
                                 <div className="flex flex-col">
                                     <label className="font-medium">Board</label>
-                                    <input name="sscBoard" type="text" className="input-field" onChange={handleChange} required />
+                                    <input name="sscBoard" type="text" className="input-field" value={formData.sscBoard} onChange={handleChange} required />
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="font-medium">Year</label>
-                                    <input name="sscYear" type="text" maxLength={4} pattern="\d{4}" className="input-field" onChange={handleChange} required />
+                                    <input name="sscYear" type="text" maxLength={4} pattern="\d{4}" className="input-field" value={formData.sscYear} onChange={handleChange} required />
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="font-medium">Marks</label>
-                                    <input name="sscMarks" type="number" min={1} className="input-field" onChange={handleChange} required />
+                                    <input name="sscMarks" type="number" min={1} className="input-field" value={formData.sscMarks} onChange={handleChange} required />
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="font-medium">Out of</label>
-                                    <input name="sscOutOf" type="number" min={500} max={600} className="input-field" onChange={handleChange} required />
+                                    <input name="sscOutOf" type="number" min={500} max={600} className="input-field" value={formData.sscOutOf} onChange={handleChange} required />
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="font-medium">Percentage</label>
-                                    <input name="sscPercentage" type="number" min={1} max={100} className="input-field" onChange={handleChange} required />
+                                    <input name="sscPercentage" type="number" min={1} max={100} className="input-field" value={formData.sscPercentage} onChange={handleChange} required />
                                 </div>
                             </div>
                         </fieldset>
@@ -228,12 +242,12 @@ const Desk1 = () => {
                         <fieldset className="border border-gray-300 p-4 rounded-md">
                             <legend className="text-lg font-semibold text-red-700">HSC Details</legend>
                             <div className="grid grid-cols-3 gap-4">
-                                <label>Board<input name="hscBoard" type="text" className="input-field" onChange={handleChange} required /></label>
-                                <label>Year<input name="hscYear" type="text" maxLength={4} pattern="\d{4}" className="input-field" onChange={handleChange} required /></label>
-                                <label>Physics<input name="hscPhysics" type="number" min={1} className="input-field" onChange={handleChange} required /></label>
-                                <label>Chemistry<input name="hscChemistry" type="number" min={1} className="input-field" onChange={handleChange} required /></label>
-                                <label>Maths<input name="hscMaths" type="number" min={1} className="input-field" onChange={handleChange} required /></label>
-                                <label>Percentage<input name="hscPercentage" type="number" min={1} max={100} className="input-field" onChange={handleChange} required /></label>
+                                <label>Board<input name="hscBoard" type="text" className="input-field"value={formData.hscBoard} onChange={handleChange} required /></label>
+                                <label>Year<input name="hscYear" type="text" maxLength={4} pattern="\d{4}" className="input-field" value={formData.hscYear} onChange={handleChange} required /></label>
+                                <label>Physics<input name="hscPhysics" type="number" min={1} className="input-field" value={formData.hscPhysics} onChange={handleChange} required /></label>
+                                <label>Chemistry<input name="hscChemistry" type="number" min={1} className="input-field" value={formData.hscChemistry} onChange={handleChange} required /></label>
+                                <label>Maths<input name="hscMaths" type="number" min={1} className="input-field" value={formData.hscMaths} onChange={handleChange} required /></label>
+                                <label>Percentage<input name="hscPercentage" type="number" min={1} max={100} className="input-field" value={formData.hscPercentage} onChange={handleChange} required /></label>
                             </div>
                         </fieldset>
 
@@ -241,11 +255,11 @@ const Desk1 = () => {
                         <fieldset className="border border-gray-300 p-4 rounded-md">
                             <legend className="text-lg font-semibold text-red-700">JEE Details</legend>
                             <div className="grid grid-cols-3 gap-4">
-                                <label>Year<input name="jeeYear" type="text" maxLength={4} pattern="\d{4}" className="input-field" onChange={handleChange} required /></label>
-                                <label>Physics<input name="jeePhysics" type="number" min={1} className="input-field" onChange={handleChange} required /></label>
-                                <label>Chemistry<input name="jeeChemistry" type="number" min={1} className="input-field" onChange={handleChange} required /></label>
-                                <label>Maths<input name="jeeMaths" type="number" min={1} className="input-field" onChange={handleChange} required /></label>
-                                <label>Percentage<input name="jeePercentage" type="number" min={1} max={100} className="input-field" onChange={handleChange} required /></label>
+                                <label>Year<input name="jeeYear" type="text" maxLength={4} pattern="\d{4}" className="input-field" value={formData.jeeYear} onChange={handleChange} required /></label>
+                                <label>Physics<input name="jeePhysics" type="number" min={1} className="input-field" value={formData.jeePhysics} onChange={handleChange} required /></label>
+                                <label>Chemistry<input name="jeeChemistry" type="number" min={1} className="input-field" value={formData.jeeChemistry} onChange={handleChange} required /></label>
+                                <label>Maths<input name="jeeMaths" type="number" min={1} className="input-field" value={formData.jeeMaths} onChange={handleChange} required /></label>
+                                <label>Percentage<input name="jeePercentage" type="number" min={1} max={100} className="input-field" value={formData.jeePercentage} onChange={handleChange} required /></label>
                             </div>
                         </fieldset>
 
@@ -255,31 +269,31 @@ const Desk1 = () => {
                             <div className="grid grid-cols-3 gap-6">
                                 <div className="flex flex-col">
                                     <label className="font-medium">Year</label>
-                                    <input name="cetYear" type="text" maxLength={4} pattern="\d{4}" className="input-field" onChange={handleChange} required />
+                                    <input name="cetYear" type="text" maxLength={4} pattern="\d{4}" className="input-field" value={formData.cetYear} onChange={handleChange} required />
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="font-medium">Physics</label>
-                                    <input name="cetPhysics" type="number" min={1} className="input-field" onChange={handleChange} required />
+                                    <input name="cetPhysics" type="number" min={1} className="input-field" value={formData.cetPhysics} onChange={handleChange} required />
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="font-medium">Chemistry</label>
-                                    <input name="cetChemistry" type="number" min={1} className="input-field" onChange={handleChange} required />
+                                    <input name="cetChemistry" type="number" min={1} className="input-field" value={formData.cetChemistry} onChange={handleChange} required />
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="font-medium">Maths</label>
-                                    <input name="cetMaths" type="number" min={1} className="input-field" onChange={handleChange} required />
+                                    <input name="cetMaths" type="number" min={1} className="input-field" value={formData.cetMaths} onChange={handleChange} required />
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="font-medium">Percentage</label>
-                                    <input name="cetPercentage" type="number" min={1} max={100} className="input-field" onChange={handleChange} required />
+                                    <input name="cetPercentage" type="number" min={1} max={100} className="input-field" value={formData.cetPercentage} onChange={handleChange} required />
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="font-medium">Enrollment ID</label>
-                                    <input name="enrollmentId" type="text" value="EN24" readOnly className="input-field bg-gray-100" />
+                                    <input name="enrollmentId" type="text" value={formData.enrollmentId} onChange={handleChange} required />
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="font-medium">Branch</label>
-                                    <input name="branch" type="text" className="input-field" onChange={handleChange} required />
+                                    <input name="branch" type="text" className="input-field" value={formData.branch} onChange={handleChange} required />
                                 </div>
                             </div>
                         </fieldset>
@@ -317,7 +331,7 @@ const Desk1 = () => {
                             <legend className="text-lg font-semibold text-red-700 px-2">Remarks</legend>
                             <div className="flex flex-col">
                                 <label className="font-medium">Additional Remarks</label>
-                                <textarea name="remarks" rows="3" className="input-field resize-none" onChange={handleChange}></textarea>
+                                <textarea name="remarks" rows="3" className="input-field resize-none" value={formData.remarks} onChange={handleChange}></textarea>
                             </div>
                         </fieldset>
 

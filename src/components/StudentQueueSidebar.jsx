@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import { Search, ArrowRight } from "lucide-react";
-import { useNavigate } from "react-router-dom"; // ✅ Import for navigation
+import { useNavigate, useLocation } from "react-router-dom"; // ✅ Added useLocation
 
 const StudentQueueSidebar = () => {
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const navigate = useNavigate(); // ✅ Hook for navigation
+    const navigate = useNavigate();
+    const location = useLocation(); // ✅ Get current path
+
+    // ✅ Extract current desk number from URL (e.g., /desk2 => desk2)
+    const currentDesk = location.pathname.split("/")[1];
 
     useEffect(() => {
         const fetchStudents = async () => {
@@ -16,7 +20,7 @@ const StudentQueueSidebar = () => {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    credentials: "include", // ✅ Allows cookies
+                    credentials: "include",
                 });
 
                 if (!response.ok) {
@@ -33,14 +37,13 @@ const StudentQueueSidebar = () => {
         };
 
         fetchStudents();
-        // ✅ Listen for newly registered students
+
         const handleStudentRegistered = (event) => {
-            setStudents((prevStudents) => [...prevStudents, event.detail.student]); // Append new student
+            setStudents((prev) => [...prev, event.detail.student]);
         };
 
-        // ✅ Listen for students moved to Desk2
         const handleStudentMoved = (event) => {
-            setStudents((prevStudents) => prevStudents.filter((s) => s._id !== event.detail.studentId)); // Remove student
+            setStudents((prev) => prev.filter((s) => s._id !== event.detail.studentId));
         };
 
         window.addEventListener("studentRegistered", handleStudentRegistered);
@@ -50,11 +53,11 @@ const StudentQueueSidebar = () => {
             window.removeEventListener("studentRegistered", handleStudentRegistered);
             window.removeEventListener("studentMoved", handleStudentMoved);
         };
-
     }, []);
 
     const handleStudentClick = (studentId) => {
-        navigate(`/desk1/${studentId}`); // ✅ Navigates to Desk1 with student ID
+        // ✅ Navigate to dynamic desk route
+        navigate(`/${currentDesk}/${studentId}`);
     };
 
     return (
@@ -77,7 +80,7 @@ const StudentQueueSidebar = () => {
                             <div
                                 key={student._id}
                                 className="flex items-center justify-between bg-gray-100 p-3 rounded-lg cursor-pointer hover:bg-gray-200 transition"
-                                onClick={() => handleStudentClick(student._id)} // ✅ Handle click event
+                                onClick={() => handleStudentClick(student._id)}
                             >
                                 <div>
                                     <div className="text-sm font-medium">{student.firstname} {student.lastname}</div>
