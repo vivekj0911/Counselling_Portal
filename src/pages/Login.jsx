@@ -49,7 +49,7 @@ const Login = () => {
             >
                 <div className="text-center mb-8">
                     <img src={logo} alt="Institute Logo" className="h-20 mx-auto mb-4" />
-                    <h2 className="text-2xl font-bold text-gray-800">
+                    <h2 className="text-2xl font-bold text-red-700 ">
                         Dr. D. Y. Patil Dnyan Prasad University
                     </h2>
                 </div>

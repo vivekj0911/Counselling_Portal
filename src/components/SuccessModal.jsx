@@ -8,7 +8,8 @@ const SuccessModal = ({ token, onClose }) => {
                 <div className="text-lg font-mono text-red-600 bg-red-100 p-2 rounded-md inline-block mb-4">
                     {token}
                 </div>
-                <p className="text-xs text-gray-500 mb-4">Please note it down for future reference.</p>
+                <p className="text-xs text-gray-500 mb-2">Please note it down for future reference.</p>
+                <p className="text-xs text-gray-500 mb-4">Also we&apos;ve sent a mail with above token and further instructions</p>
                 <button
                     onClick={onClose}
                     className="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600 transition"

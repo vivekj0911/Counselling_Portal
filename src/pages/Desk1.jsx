@@ -30,7 +30,7 @@ const Desk1 = () => {
         jeePercentile: "",
         cetYear: new Date().getFullYear().toString(),
         cetPercentile: "",
-        enrollmentId: "EN24",
+        enrollmentId: "",
         branch: "",
         remarks: ""
     });
@@ -146,7 +146,7 @@ const Desk1 = () => {
                 jeePercentile: "",
                 cetYear: "",
                 cetPercentile: "",
-                enrollmentId: "EN24",
+                enrollmentId: "",
                 branch: "",
                 campusVisit: false,
                 cafeteriaVisit: false,

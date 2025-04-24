@@ -74,7 +74,7 @@ export default function Desk4() {
     };
 
     return (
-        <div className="p-6 max-w-5xl mx-auto bg-white rounded-lg">
+        <div className="p-6 max-w-6xl mx-auto bg-white rounded-lg">
             {!studentId ? (
                 <p className="text-gray-500">Select a student from the queue.</p>
             ) : loading ? (
@@ -82,24 +82,227 @@ export default function Desk4() {
             ) : error ? (
                 <p className="text-red-500">{error}</p>
             ) : student ? (
-                <div className="max-w-xl mx-auto mt-10 bg-white shadow-xl p-6 rounded-2xl">
+                <div className="max-w-4xl mx-auto mt-10 bg-white shadow-xl p-6 rounded-2xl">
                     <h2 className="text-2xl font-semibold text-red-700 mb-6 text-center">Desk 4 - Final Admission Decision</h2>
-                    <fieldset className="border border-gray-300 p-6 rounded-md mb-4">
-                        <legend className="text-lg font-semibold text-red-700 px-2">Previous Desk Remarks</legend>
-                        <div className="flex flex-col">
-                            <label className="font-medium">Desk1 - Remark</label>
-                            <textarea name="remarks" rows="3" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.remarks} readOnly ></textarea>
-                        </div>
-                        <div className="flex flex-col">
-                            <label className="font-medium">Desk2 - Remark</label>
-                            <textarea name="remarks" rows="3" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk2.remarks} readOnly ></textarea>
-                        </div>
-                        <div className="flex flex-col">
-                            <label className="font-medium">Desk3 - Remark</label>
-                            <textarea name="remarks" rows="3" className="input-field resize-none text-gray-600 bg-gray-100" value={student.desk_updates.desk3.remarks} readOnly ></textarea>
+                    {/* Personal Details */}
+                    <fieldset className="border border-gray-300 p-6 rounded-md">
+                        <legend className="text-lg font-semibold text-red-700 px-2">Personal Details</legend>
+                        <div className="grid grid-cols-2 gap-6">
+                            <div className="flex flex-col">
+                                <label className="font-medium">Student Name</label>
+                                <input name="studentName" type="text" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={`${student.firstname} ${student.lastname}`} readOnly />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Father&apos;s Name</label>
+                                <input name="fatherName" type="text" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.fatherName} readOnly />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Mother&apos;s Name</label>
+                                <input name="motherName" type="text" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.motherName} readOnly />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Gender</label>
+                                <input name="gender" type="text" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student?.gender === "male" ? "Male" : student?.gender === "female" ? "Female" : student?.gender === "other" ? "Other" : student?.gender || "Not Available"} readOnly />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Email</label>
+                                <input name="email" type="email" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={`${student.email}`} readOnly />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Phone No</label>
+                                <input name="phone" type="text" maxLength={10} pattern="\d{10}" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={`${student.phone}`} readOnly />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Purpose</label>
+                                <input name="purpose" type="text" maxLength={10} pattern="\d{10}" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student?.purpose === "admission" ? "Admission" : student?.purpose === "inquiry" ? "Inquiry" : student?.purpose === "visit" ? "Campus Visit" : student?.purpose || "Not Available"} readOnly />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Stream</label>
+                                <input name="stream" type="text" maxLength={10} pattern="\d{10}" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student?.stream === "phr" ? "Pharmacy" : student?.stream === "eng" ? "Engineering" : student?.stream === "mba" ? "Management" : student?.stream === "libart" ? "Liberal Arts" : student?.stream || "Not Available"} readOnly />
+                            </div>
+                            <div className="col-span-2 flex flex-col">
+                                <label className="font-medium">Address</label>
+                                <textarea name="address" rows="3" className="input-field resize-none text-gray-600 bg-gray-100 mb-3 resize-none" value={student.desk_updates.desk1.address} readOnly></textarea>
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Pin Code</label>
+                                <input name="pinCode" type="text" maxLength={6} pattern="\d{6}" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.pinCode} readOnly />
+                            </div>
                         </div>
                     </fieldset>
-                    <form onSubmit={handleSubmit} className="space-y-5">
+
+                    {/* Religious Details */}
+                    <fieldset className="border border-gray-300 p-6 rounded-md mt-3">
+                        <legend className="text-lg font-semibold text-red-700 px-2">Religious Details</legend>
+                        <div className="grid grid-cols-2 gap-6">
+                            <div className="flex flex-col">
+                                <label className="font-medium">Nationality</label>
+                                <input name="nationality" type="text" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.nationality} readOnly />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Category</label>
+                                <input name="category" type="text" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.category} readOnly />
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    {/* SSC Details */}
+                    <fieldset className="border border-gray-300 p-6 rounded-md mt-3">
+                        <legend className="text-lg font-semibold text-red-700 px-2">SSC Details</legend>
+                        <div className="grid grid-cols-3 gap-6">
+                            <div className="flex flex-col">
+                                <label className="font-medium">Board</label>
+                                <input name="sscBoard" type="text" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.sscBoard} readOnly />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Year</label>
+                                <input name="sscYear" type="text" maxLength={4} pattern="\d{4}" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.sscYear} readOnly />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Marks</label>
+                                <input name="sscMarks" type="number" min={1} className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.sscMarks} readOnly />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Out of</label>
+                                <input name="sscOutOf" type="number" min={500} max={600} className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.sscOutOf} readOnly />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Percentage</label>
+                                <input name="sscPercentage" type="number" min={1} max={100} className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.sscPercentage} readOnly />
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    {/* HSC Details */}
+                    <fieldset className="border border-gray-300 p-6 rounded-md mt-3">
+                        <legend className="text-lg font-semibold text-red-700 px-2">HSC Details</legend>
+                        <div className="grid grid-cols-3 gap-6">
+                            <div className="flex flex-col">
+                                <label className="font-medium">Board</label>
+                                <input name="hscBoard" type="text" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.hscBoard} readOnly />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Year</label>
+                                <input name="hscYear" type="text" maxLength={4} pattern="\d{4}" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.hscYear} readOnly />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Marks</label>
+                                <input name="hscMarks" type="number" min={1} className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.hscMarks} readOnly />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Out of</label>
+                                <input name="hscOutOf" type="number" min={500} max={600} className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.hscOutOf} readOnly />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Percentage</label>
+                                <input name="hscPercentage" type="number" min={1} max={100} className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.hscPercentage} readOnly />
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    {/* JEE Details */}
+                    <fieldset className="border border-gray-300 p-6 rounded-md mt-3">
+                        <legend className="text-lg font-semibold text-red-700 px-2">JEE Details</legend>
+                        <div className="grid grid-cols-3 gap-6">
+                            <div className="flex flex-col">
+                                <label className="font-medium">Year</label>
+                                <input name="jeeYear" type="text" maxLength={4} pattern="\d{4}" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.jeeYear} readOnly />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Percentile</label>
+                                <input name="jeePercentile" type="text" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.jeePercentile == '' ? "Not filled" : student.desk_updates.desk1.jeePercentile} />
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    {/* MHT-CET Details */}
+                    <fieldset className="border border-gray-300 p-6 rounded-md mt-3">
+                        <legend className="text-lg font-semibold text-red-700 px-2">MHT-CET Details</legend>
+                        <div className="grid grid-cols-3 gap-6">
+                            <div className="flex flex-col">
+                                <label className="font-medium">Year</label>
+                                <input name="cetYear" type="text" maxLength={4} pattern="\d{4}" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.cetYear} readOnly />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Percentile</label>
+                                <input name="cetPercentile" type="text" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.cetPercentile == '' ? "Not filled" : student.desk_updates.desk1.cetPercentile} />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Enrollment ID</label>
+                                <input name="enrollmentId" type="text" value={student.desk_updates.desk1.enrollmentId} className="input-field resize-none text-gray-600 bg-gray-100 mb-3" />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Branch</label>
+                                <input name="branch" type="text" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.branch == '' ? "Not filled" : student.desk_updates.desk1.branch} />
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    {/*Desk1 remarks*/}
+                    <fieldset className="border border-gray-300 p-6 rounded-md mt-3">
+                        <legend className="text-lg font-semibold text-red-700 px-2">Desk1 - Remarks</legend>
+                        <div className="flex flex-col">
+                            <label className="font-medium">Additional Remarks</label>
+                            <textarea name="remarks" rows="3" className="input-field resize-none text-gray-600 bg-gray-100 mb-3 resize-none" value={student.desk_updates.desk1.remarks} ></textarea>
+                        </div>
+                    </fieldset>
+
+                    {/* Campus Visit Details */}
+                    <fieldset className="border border-gray-300 p-6 rounded-md mt-3">
+                        <legend className="text-lg font-semibold text-red-700 px-2">Campus Visit Details</legend>
+                        <div className="grid grid-cols-2 gap-6">
+                            <div className="flex items-center gap-2">
+                                <input type="checkbox" name="campusVisit" checked={student.desk_updates.desk2.campusVisit} className="w-5 h-5" readOnly />
+                                <label className="font-medium">Campus Visit</label>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <input type="checkbox" name="cafeteriaVisit" checked={student.desk_updates.desk2.cafeteriaVisit} className="w-5 h-5" readOnly />
+                                <label className="font-medium">Cafeteria Visit</label>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <input type="checkbox" name="sportsFacilityVisit" checked={student.desk_updates.desk2.sportsFacilityVisit} className="w-5 h-5" readOnly />
+                                <label className="font-medium">Sports Facility Visit</label>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <input type="checkbox" name="labVisit" checked={student.desk_updates.desk2.labVisit} className="w-5 h-5" readOnly />
+                                <label className="font-medium">Lab Visit</label>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <input type="checkbox" name="classroomVisit" checked={student.desk_updates.desk2.classroomVisit} className="w-5 h-5" readOnly />
+                                <label className="font-medium">Classroom Visit</label>
+                            </div>
+                        </div>
+                    </fieldset>
+
+
+                    {/* Desk2 Remarks */}
+                    <fieldset className="border border-gray-300 p-6 rounded-md mt-3">
+                        <legend className="text-lg font-semibold text-red-700 px-2">Desk2 - Remarks</legend>
+                        <div className="flex flex-col">
+                            <label className="font-medium">Remarks</label>
+                            <textarea name="remarks" rows="3" className="input-field resize-none text-gray-600 bg-gray-100 mb-3 resize-none" value={student.desk_updates.desk2.remarks} ></textarea>
+                        </div>
+                    </fieldset>
+
+                    <fieldset className="border border-gray-300 p-6 rounded-md mt-3">
+                        <legend className="text-lg font-semibold text-red-700 px-2">Counselling Topic</legend>
+                        <div className="flex flex-col">
+                            <label className="font-medium">Topic</label>
+                            <textarea name="remarks" rows="3" className="input-field text-gray-600 bg-gray-100 resize-none h-11" value={student.desk_updates.desk3.topic} ></textarea>
+                        </div>
+                    </fieldset>
+
+                    <fieldset className="border border-gray-300 p-6 rounded-md mt-3">
+                        <legend className="text-lg font-semibold text-red-700 px-2">Desk3 - Remarks</legend>
+                        <div className="flex flex-col">
+                            <label className="font-medium">Remarks</label>
+                            <textarea name="remarks" rows="3" className="input-field resize-none text-gray-600 bg-gray-100 mb-3 resize-none" value={student.desk_updates.desk3.remarks} ></textarea>
+                        </div>
+                    </fieldset>
+
+                    {/* <button type="submit" className="w-full bg-red-700 text-white py-3 rounded-md text-lg hover:bg-red-800 transition">Submit</button> */}
+
+                    <form onSubmit={handleSubmit} className="space-y-5 mt-4">
                         {/* Admission Status */}
                         <div>
                             <label className="block text-gray-700 font-medium mb-1" htmlFor="admissionStatus">
