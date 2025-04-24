@@ -12,12 +12,17 @@ const Header = () => {
 
                 {/* Institute Details */}
                 <div className="text-center flex-1">
-                    <div className="font-bold text-lg">Dr. D. Y. Patil Unitech Society&#39;s</div>
-                    <div className="font-bold text-xl">DR. D. Y. PATIL INSTITUTE OF TECHNOLOGY</div>
-                    <div className="text-sm">Main Campus, Sant Tukaram Nagar, Pimpri, Pune.</div>
-                    <div className="text-xs italic">
+                    {/* <div className="font-bold text-lg">Dr. D. Y. Patil Unitech Society&#39;s</div> */}
+                    {/* <div className="font-bold text-xl">DR. D. Y. PATIL INSTITUTE OF TECHNOLOGY</div> */}
+                    <div className="font-bold text-xl">DR. D. Y. PATIL DNYAN PRASAD UNIVERSITY, PUNE</div>
+                    {/* <div className="text-sm">Sant Tukaram Nagar, Pimpri, Pune.</div> */}
+                    {/* <div className="text-xs italic">
                         Permanently Affiliated to the Savitribai Phule Pune University.
                         Approved by AICTE New Delhi and DTE Maharashtra.
+                    </div> */}
+                    <div className="text-xs italic">
+                        Established under the Maharashtra Private Universities (Establishment and Regulation) 
+                        (Amendment) Act, 2024 (Mah. Act No. 20 of 2024)
                     </div>
                 </div>
 

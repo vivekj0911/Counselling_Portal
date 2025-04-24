@@ -24,28 +24,14 @@ const Desk1 = () => {
         sscPercentage: "",
         hscBoard: "",
         hscYear: "",
-        hscPhysics: "",
-        hscChemistry: "",
-        hscMaths: "",
-        hscTotalMarks: "",
+        hscMarks: "",
         hscPercentage: "",
-        jeeYear: "",
-        jeePhysics: "",
-        jeeChemistry: "",
-        jeeMaths: "",
-        jeePercentage: "",
-        cetYear: "",
-        cetPhysics: "",
-        cetChemistry: "",
-        cetMaths: "",
-        cetPercentage: "",
+        jeeYear: new Date().getFullYear().toString(),
+        jeePercentile: "",
+        cetYear: new Date().getFullYear().toString(),
+        cetPercentile: "",
         enrollmentId: "EN24",
         branch: "",
-        campusVisit: false,
-        cafeteriaVisit: false,
-        sportsFacilityVisit: false,
-        labVisit: false,
-        classroomVisit: false,
         remarks: ""
     });
     // Fetch student details
@@ -59,6 +45,10 @@ const Desk1 = () => {
                 const response = await axios.get(`http://localhost:3000/api/desk/${studentId}`, {
                     withCredentials: true,
                 });
+                response.data.stream == "eng" ? response.data.stream="Engineering" : 
+                response.data.stream == "phr" ? response.data.stream="Pharmacy" :
+                response.data.stream == "mba" ? response.data.stream="MBA" :
+                response.data.stream="Liberal Arts"
                 setStudent(response.data);
 
             } catch (err) {
@@ -71,16 +61,60 @@ const Desk1 = () => {
         fetchStudentDetails();
     }, [studentId]);
 
+    // const handleChange = (e) => {
+    //     const { name, value, type, checked } = e.target;
+    //     setFormData((prev) => ({
+    //         ...prev,
+    //         [name]: type === "checkbox" ? checked : value,
+    //     }));
+    // };
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: type === "checkbox" ? checked : value,
-        }));
+
+        setFormData((prev) => {
+            const updatedValue = type === "checkbox" ? checked : value;
+
+            const updatedFormData = {
+                ...prev,
+                [name]: updatedValue,
+            };
+
+            // Check if marks or outOf changed, then calculate percentage
+            if (name === "sscMarks" || name === "sscOutOf") {
+                const marks = parseFloat(name === "sscMarks" ? updatedValue : updatedFormData.sscMarks);
+                const outOf = parseFloat(name === "sscOutOf" ? updatedValue : updatedFormData.sscOutOf);
+
+                if (!isNaN(marks) && !isNaN(outOf) && outOf > 0) {
+                    updatedFormData.sscPercentage = ((marks / outOf) * 100).toFixed(2);
+                } else {
+                    updatedFormData.sscPercentage = '';
+                }
+            }
+
+            if (name === "hscMarks" || name === "hscOutOf") {
+                const marks = parseFloat(name === "hscMarks" ? updatedValue : updatedFormData.hscMarks);
+                const outOf = parseFloat(name === "hscOutOf" ? updatedValue : updatedFormData.hscOutOf);
+
+                if (!isNaN(marks) && !isNaN(outOf) && outOf > 0) {
+                    updatedFormData.hscPercentage = ((marks / outOf) * 100).toFixed(2);
+                } else {
+                    updatedFormData.hscPercentage = '';
+                }
+            }
+
+            return updatedFormData;
+        });
     };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const jeeFilled = formData.jeePercentile?.trim() !== "";
+        const cetFilled = formData.cetPercentile?.trim() !== "";
+        if (!jeeFilled && !cetFilled) {
+            alert("Please fill either JEE or MHT-CET details.");
+            return;
+        }
         try {
             await axios.put(`http://localhost:3000/api/desk/1/update/${studentId}`, formData, {
                 withCredentials: true,
@@ -105,28 +139,21 @@ const Desk1 = () => {
                 sscPercentage: "",
                 hscBoard: "",
                 hscYear: "",
-                hscPhysics: "",
-                hscChemistry: "",
-                hscMaths: "",
-                hscTotalMarks: "",
+                hscMarks: "",
+                hscOutOf: "",
                 hscPercentage: "",
                 jeeYear: "",
-                jeePhysics: "",
-                jeeChemistry: "",
-                jeeMaths: "",
-                jeePercentage: "",
+                jeePercentile: "",
                 cetYear: "",
-                cetPhysics: "",
-                cetChemistry: "",
-                cetMaths: "",
-                cetPercentage: "",
+                cetPercentile: "",
                 enrollmentId: "EN24",
                 branch: "",
                 campusVisit: false,
                 cafeteriaVisit: false,
                 sportsFacilityVisit: false,
                 labVisit: false,
-                classroomVisit: false
+                classroomVisit: false,
+                remarks: ""
             });
 
             // ✅ Navigate to the base Desk1 page (removes studentId from URL)
@@ -158,11 +185,11 @@ const Desk1 = () => {
                                     <input name="studentName" type="text" className="input-field" value={`${student.firstname} ${student.lastname}`} readOnly />
                                 </div>
                                 <div className="flex flex-col">
-                                    <label className="font-medium">Father's Name</label>
+                                    <label className="font-medium">Father&apos;s Name</label>
                                     <input name="fatherName" type="text" className="input-field" value={formData.fatherName} onChange={handleChange} required />
                                 </div>
                                 <div className="flex flex-col">
-                                    <label className="font-medium">Mother's Name</label>
+                                    <label className="font-medium">Mother&apos;s Name</label>
                                     <input name="motherName" type="text" className="input-field" value={formData.motherName} onChange={handleChange} required />
                                 </div>
                                 <div className="flex flex-col">
@@ -233,33 +260,50 @@ const Desk1 = () => {
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="font-medium">Percentage</label>
-                                    <input name="sscPercentage" type="number" min={1} max={100} className="input-field" value={formData.sscPercentage} onChange={handleChange} required />
+                                    <input name="sscPercentage" type="number" min={1} max={100} className="input-field" value={formData.sscPercentage} onChange={handleChange} required readOnly />
                                 </div>
                             </div>
                         </fieldset>
 
                         {/* HSC Details */}
-                        <fieldset className="border border-gray-300 p-4 rounded-md">
-                            <legend className="text-lg font-semibold text-red-700">HSC Details</legend>
-                            <div className="grid grid-cols-3 gap-4">
-                                <label>Board<input name="hscBoard" type="text" className="input-field"value={formData.hscBoard} onChange={handleChange} required /></label>
-                                <label>Year<input name="hscYear" type="text" maxLength={4} pattern="\d{4}" className="input-field" value={formData.hscYear} onChange={handleChange} required /></label>
-                                <label>Physics<input name="hscPhysics" type="number" min={1} className="input-field" value={formData.hscPhysics} onChange={handleChange} required /></label>
-                                <label>Chemistry<input name="hscChemistry" type="number" min={1} className="input-field" value={formData.hscChemistry} onChange={handleChange} required /></label>
-                                <label>Maths<input name="hscMaths" type="number" min={1} className="input-field" value={formData.hscMaths} onChange={handleChange} required /></label>
-                                <label>Percentage<input name="hscPercentage" type="number" min={1} max={100} className="input-field" value={formData.hscPercentage} onChange={handleChange} required /></label>
+                        <fieldset className="border border-gray-300 p-6 rounded-md">
+                            <legend className="text-lg font-semibold text-red-700 px-2">HSC Details</legend>
+                            <div className="grid grid-cols-3 gap-6">
+                                <div className="flex flex-col">
+                                    <label className="font-medium">Board</label>
+                                    <input name="hscBoard" type="text" className="input-field" value={formData.hscBoard} onChange={handleChange} required />
+                                </div>
+                                <div className="flex flex-col">
+                                    <label className="font-medium">Year</label>
+                                    <input name="hscYear" type="text" maxLength={4} pattern="\d{4}" className="input-field" value={formData.hscYear} onChange={handleChange} required />
+                                </div>
+                                <div className="flex flex-col">
+                                    <label className="font-medium">Marks</label>
+                                    <input name="hscMarks" type="number" min={1} className="input-field" value={formData.hscMarks} onChange={handleChange} required />
+                                </div>
+                                <div className="flex flex-col">
+                                    <label className="font-medium">Out of</label>
+                                    <input name="hscOutOf" type="number" min={500} max={600} className="input-field" value={formData.hscOutOf} onChange={handleChange} required />
+                                </div>
+                                <div className="flex flex-col">
+                                    <label className="font-medium">Percentage</label>
+                                    <input name="hscPercentage" type="number" min={1} max={100} className="input-field" value={formData.hscPercentage} onChange={handleChange} required readOnly />
+                                </div>
                             </div>
                         </fieldset>
 
                         {/* JEE Details */}
-                        <fieldset className="border border-gray-300 p-4 rounded-md">
-                            <legend className="text-lg font-semibold text-red-700">JEE Details</legend>
-                            <div className="grid grid-cols-3 gap-4">
-                                <label>Year<input name="jeeYear" type="text" maxLength={4} pattern="\d{4}" className="input-field" value={formData.jeeYear} onChange={handleChange} required /></label>
-                                <label>Physics<input name="jeePhysics" type="number" min={1} className="input-field" value={formData.jeePhysics} onChange={handleChange} required /></label>
-                                <label>Chemistry<input name="jeeChemistry" type="number" min={1} className="input-field" value={formData.jeeChemistry} onChange={handleChange} required /></label>
-                                <label>Maths<input name="jeeMaths" type="number" min={1} className="input-field" value={formData.jeeMaths} onChange={handleChange} required /></label>
-                                <label>Percentage<input name="jeePercentage" type="number" min={1} max={100} className="input-field" value={formData.jeePercentage} onChange={handleChange} required /></label>
+                        <fieldset className="border border-gray-300 p-6 rounded-md">
+                            <legend className="text-lg font-semibold text-red-700 px-2">JEE Details</legend>
+                            <div className="grid grid-cols-3 gap-6">
+                                <div className="flex flex-col">
+                                    <label className="font-medium">Year</label>
+                                    <input name="jeeYear" type="text" maxLength={4} pattern="\d{4}" className="input-field" value={formData.jeeYear} onChange={handleChange} readOnly />
+                                </div>
+                                <div className="flex flex-col">
+                                    <label className="font-medium">Percentile</label>
+                                    <input name="jeePercentile" type="number" min={1} max={100} step={0.01} className="input-field" value={formData.jeePercentile} onChange={handleChange} />
+                                </div>
                             </div>
                         </fieldset>
 
@@ -269,37 +313,25 @@ const Desk1 = () => {
                             <div className="grid grid-cols-3 gap-6">
                                 <div className="flex flex-col">
                                     <label className="font-medium">Year</label>
-                                    <input name="cetYear" type="text" maxLength={4} pattern="\d{4}" className="input-field" value={formData.cetYear} onChange={handleChange} required />
+                                    <input name="cetYear" type="text" maxLength={4} pattern="\d{4}" className="input-field" value={formData.cetYear} onChange={handleChange} readOnly />
                                 </div>
                                 <div className="flex flex-col">
-                                    <label className="font-medium">Physics</label>
-                                    <input name="cetPhysics" type="number" min={1} className="input-field" value={formData.cetPhysics} onChange={handleChange} required />
-                                </div>
-                                <div className="flex flex-col">
-                                    <label className="font-medium">Chemistry</label>
-                                    <input name="cetChemistry" type="number" min={1} className="input-field" value={formData.cetChemistry} onChange={handleChange} required />
-                                </div>
-                                <div className="flex flex-col">
-                                    <label className="font-medium">Maths</label>
-                                    <input name="cetMaths" type="number" min={1} className="input-field" value={formData.cetMaths} onChange={handleChange} required />
-                                </div>
-                                <div className="flex flex-col">
-                                    <label className="font-medium">Percentage</label>
-                                    <input name="cetPercentage" type="number" min={1} max={100} className="input-field" value={formData.cetPercentage} onChange={handleChange} required />
+                                    <label className="font-medium">Percentile</label>
+                                    <input name="cetPercentile" type="number" min={1} max={100} step={0.01} className="input-field" value={formData.cetPercentile} onChange={handleChange} />
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="font-medium">Enrollment ID</label>
-                                    <input name="enrollmentId" type="text" value={formData.enrollmentId} onChange={handleChange} required />
+                                    <input name="enrollmentId" type="text" value={formData.enrollmentId} className="input-field" onChange={handleChange} />
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="font-medium">Branch</label>
-                                    <input name="branch" type="text" className="input-field" value={formData.branch} onChange={handleChange} required />
+                                    <input name="branch" type="text" className="input-field" value={formData.branch} onChange={handleChange} />
                                 </div>
                             </div>
                         </fieldset>
 
                         {/* Campus Visit Details */}
-                        <fieldset className="border border-gray-300 p-6 rounded-md">
+                        {/* <fieldset className="border border-gray-300 p-6 rounded-md">
                             <legend className="text-lg font-semibold text-red-700 px-2">Campus Visit Details</legend>
                             <div className="grid grid-cols-2 gap-6">
                                 <div className="flex items-center gap-2">
@@ -323,7 +355,7 @@ const Desk1 = () => {
                                     <label className="font-medium">Classroom Visit</label>
                                 </div>
                             </div>
-                        </fieldset>
+                        </fieldset> */}
 
 
                         {/* Remarks */}
