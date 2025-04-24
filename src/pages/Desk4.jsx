@@ -84,7 +84,21 @@ export default function Desk4() {
             ) : student ? (
                 <div className="max-w-xl mx-auto mt-10 bg-white shadow-xl p-6 rounded-2xl">
                     <h2 className="text-2xl font-semibold text-red-700 mb-6 text-center">Desk 4 - Final Admission Decision</h2>
-
+                    <fieldset className="border border-gray-300 p-6 rounded-md mb-4">
+                        <legend className="text-lg font-semibold text-red-700 px-2">Previous Desk Remarks</legend>
+                        <div className="flex flex-col">
+                            <label className="font-medium">Desk1 - Remark</label>
+                            <textarea name="remarks" rows="3" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk1.remarks} readOnly ></textarea>
+                        </div>
+                        <div className="flex flex-col">
+                            <label className="font-medium">Desk2 - Remark</label>
+                            <textarea name="remarks" rows="3" className="input-field resize-none text-gray-600 bg-gray-100 mb-3" value={student.desk_updates.desk2.remarks} readOnly ></textarea>
+                        </div>
+                        <div className="flex flex-col">
+                            <label className="font-medium">Desk3 - Remark</label>
+                            <textarea name="remarks" rows="3" className="input-field resize-none text-gray-600 bg-gray-100" value={student.desk_updates.desk3.remarks} readOnly ></textarea>
+                        </div>
+                    </fieldset>
                     <form onSubmit={handleSubmit} className="space-y-5">
                         {/* Admission Status */}
                         <div>

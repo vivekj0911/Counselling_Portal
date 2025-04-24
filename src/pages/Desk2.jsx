@@ -86,6 +86,14 @@ export default function Desk2() {
                     <h2 className="text-2xl font-semibold text-red-700 mb-6 text-center">Desk 2 - Counselling Details</h2>
 
                     <form onSubmit={handleSubmit} className="space-y-5">
+                        {/* Remrks from desk1 */}
+                        <fieldset className="border border-gray-300 p-6 rounded-md">
+                            <legend className="text-lg font-semibold text-red-700 px-2">Previous Desk Remarks</legend>
+                            <div className="flex flex-col">
+                                <label className="font-medium">Desk1 - Remark</label>
+                                <textarea name="remarks" rows="3" className="input-field resize-none text-gray-600 bg-gray-100" value={student.desk_updates.desk1.remarks} readOnly ></textarea>
+                            </div>
+                        </fieldset>
                         {/* Campus Visit Details */}
                         <fieldset className="border border-gray-300 p-6 rounded-md">
                             <legend className="text-lg font-semibold text-red-700 px-2">Campus Visit Details</legend>
