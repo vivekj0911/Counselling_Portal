@@ -165,7 +165,7 @@ const StudentEntryForm = () => {
                                     <option value="eng">Engineering</option>
                                     <option value="mba">Management</option>
                                     <option value="phr">Pharmacy</option>
-                                    <option value="libart">Liberal Arts</option>
+                                    <option value="lba">Liberal Arts</option>
                                 </select>
                             </div>
                             <div>

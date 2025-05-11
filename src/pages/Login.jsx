@@ -5,7 +5,7 @@ import "../index.css";
 import logo from "../assets/logo.png";
 
 const Login = () => {
-    const [formData, setFormData] = useState({ username: "", password: "" });
+    const [formData, setFormData] = useState({ email: "", password: "" });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const navigate = useNavigate();
@@ -21,15 +21,13 @@ const Login = () => {
 
         try {
             await axios.post("http://localhost:3000/api/auth/login", formData, {
-                withCredentials: true, // Ensures cookies are sent
+                withCredentials: true,
             });
 
-            // Fetch user role after successful login
             const { data } = await axios.get("http://localhost:3000/api/auth/me", {
                 withCredentials: true,
             });
-            console.log(data);
-            
+
             navigate(`/${data.role}`);
         } catch (err) {
             setError(err.response?.data?.message || "Login failed");
@@ -49,22 +47,26 @@ const Login = () => {
             >
                 <div className="text-center mb-8">
                     <img src={logo} alt="Institute Logo" className="h-20 mx-auto mb-4" />
-                    <h2 className="text-2xl font-bold text-red-700 ">
+                    <h2 className="text-2xl font-bold text-red-700">
                         Dr. D. Y. Patil Dnyan Prasad University
                     </h2>
                 </div>
 
-                {error && <div className="bg-red-100 text-red-700 px-4 py-2 mb-4 rounded">{error}</div>}
+                {error && (
+                    <div className="bg-red-100 text-red-700 px-4 py-2 mb-4 rounded">
+                        {error}
+                    </div>
+                )}
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-                            Username
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                            Email
                         </label>
                         <input
-                            type="text"
-                            name="username"
-                            value={formData.username}
+                            type="email"
+                            name="email"
+                            value={formData.email}
                             onChange={handleChange}
                             required
                             className="w-full px-4 py-2 border rounded focus:ring focus:ring-blue-300 outline-none"
@@ -83,6 +85,15 @@ const Login = () => {
                             required
                             className="w-full px-4 py-2 border rounded focus:ring focus:ring-blue-300 outline-none"
                         />
+                        <div className="text-sm py-2 text-center">
+                            <span>Forgot your password? </span>
+                            <button
+                                onClick={() => navigate("/forgot-password")}
+                                className="text-blue-600 hover:underline font-medium"
+                            >
+                                Reset here
+                            </button>
+                        </div>
                     </div>
 
                     <button

@@ -1,5 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
+import SetPassword from "./pages/SetPassword";
 import GateRegistration from "./pages/GateRegistration";
 import Desk1 from "./pages/Desk1";
 import Desk2 from "./pages/Desk2";
@@ -8,12 +10,16 @@ import Desk4 from "./pages/Desk4";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DeskLayout from "./components/DeskLayout";
 import "./index.css";
+import AdminPanel from "./pages/AdminPanel";
 
 
 const App = () => {
     return (
         <Routes>
             <Route path="/" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/set-password" element={<SetPassword />} />
+
 
             {/* Protected Routes */}
             <Route element={<ProtectedRoute allowedRoles={["gate"]} />}>
@@ -37,12 +43,16 @@ const App = () => {
                     <Route path="/desk3" element={<Desk3 />} />
                     <Route path="/desk3/:studentId" element={<Desk3 />} />
                 </Route>
-                <Route element={<ProtectedRoute allowedRoles={["desk4"]} />}>
-                    <Route path="/desk4" element={<Desk4 />} />
+
+            </Route>
+                <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+                    <Route path="/admin" element={<AdminPanel />} />
                     <Route path="/desk4/:studentId" element={<Desk4 />} />
                 </Route>
 
-            </Route>
+             {/* Default route */}
+             <Route path="*" element={<Login />} />
+
         </Routes>
     );
 };
