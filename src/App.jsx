@@ -9,42 +9,42 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import DeskLayout from "./components/DeskLayout";
 import "./index.css";
 
-
 const App = () => {
-    return (
-        <Routes>
-            <Route path="/" element={<Login />} />
+  return (
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/desk4" element={<Desk4 />} />
+      <Route path="/desk4/:studentId" element={<Desk4 />} />
 
-            {/* Protected Routes */}
-            <Route element={<ProtectedRoute allowedRoles={["gate"]} />}>
-                <Route path="/gate" element={<GateRegistration />} />
-            </Route>
+      {/* Protected Routes */}
+      <Route element={<ProtectedRoute allowedRoles={["gate"]} />}>
+        <Route path="/gate" element={<GateRegistration />} />
+      </Route>
 
-            {/* Wrap desk pages inside DeskLayout */}
-            <Route element={<DeskLayout />}>
-                <Route element={<ProtectedRoute allowedRoles={["desk1"]} />}>
-                    {/* ✅ Show Desk1 without a student initially */}
-                    <Route path="/desk1" element={<Desk1 />} />
-                    {/* ✅ Load a student form dynamically */}
-                    <Route path="/desk1/:studentId" element={<Desk1 />} />
-                </Route>
-                <Route element={<ProtectedRoute allowedRoles={["desk2"]} />}>
-                    <Route path="/desk2" element={<Desk2 />} />
-                    <Route path="/desk2/:studentId" element={<Desk2 />} />
-                </Route>
+      {/* Wrap desk pages inside DeskLayout */}
+      <Route element={<DeskLayout />}>
+        <Route element={<ProtectedRoute allowedRoles={["desk1"]} />}>
+          {/* ✅ Show Desk1 without a student initially */}
+          <Route path="/desk1" element={<Desk1 />} />
+          {/* ✅ Load a student form dynamically */}
+          <Route path="/desk1/:studentId" element={<Desk1 />} />
+        </Route>
+        <Route element={<ProtectedRoute allowedRoles={["desk2"]} />}>
+          <Route path="/desk2" element={<Desk2 />} />
+          <Route path="/desk2/:studentId" element={<Desk2 />} />
+        </Route>
 
-                <Route element={<ProtectedRoute allowedRoles={["desk3"]} />}>
-                    <Route path="/desk3" element={<Desk3 />} />
-                    <Route path="/desk3/:studentId" element={<Desk3 />} />
-                </Route>
-                <Route element={<ProtectedRoute allowedRoles={["desk4"]} />}>
-                    <Route path="/desk4" element={<Desk4 />} />
-                    <Route path="/desk4/:studentId" element={<Desk4 />} />
-                </Route>
-
-            </Route>
-        </Routes>
-    );
+        <Route element={<ProtectedRoute allowedRoles={["desk3"]} />}>
+          <Route path="/desk3" element={<Desk3 />} />
+          <Route path="/desk3/:studentId" element={<Desk3 />} />
+        </Route>
+      </Route>
+      {/* <Route element={<ProtectedRoute allowedRoles={["desk4"]} />}> */}
+      <Route path="/desk4" element={<Desk4 />} />
+      <Route path="/desk4/:studentId" element={<Desk4 />} />
+      {/* </Route> */}
+    </Routes>
+  );
 };
 
 export default App;
