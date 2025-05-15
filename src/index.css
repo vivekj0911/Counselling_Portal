@@ -3,3 +3,17 @@
 .input-field {
     @apply w-full border border-gray-400 p-2 rounded-md focus:outline-none focus:border-red-700;
 }
+
+
+@font-face {
+  font-family: 'Metropolis';
+  src: url('/fonts/Metropolis-Black.woff2') format('woff2');
+  font-weight: 650;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-metropolis{
+  font-family: 'Metropolis', sans-serif;
+  font-weight: 650;
+}
