@@ -89,85 +89,94 @@ const AdminDashboardStats = ({ statsType = "all" }) => {
   switch (statsType) {
     case "studentCount":
       return (
-        <>
-          <div className=" grid grid-cols-2 gap-4">
-            <div className="shadow text-xl rounded p-3">
-              <p >
-                Total Students:
-                <strong className="p-2">{studentStats.total}</strong>
-              </p>
-            </div>
-            <div className="shadow text-xl rounded p-3">
-              <p>
-                Today's Students:
-                <strong className="p-2">{studentStats.today}</strong>
-              </p>
-            </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+            <p className="text-sm text-gray-600">Total Students</p>
+            <p className="text-2xl font-semibold text-red-700 mt-1">{studentStats.total}</p>
           </div>
-        </>
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+            <p className="text-sm text-gray-600">Today's Students</p>
+            <p className="text-2xl font-semibold text-red-700 mt-1">{studentStats.today}</p>
+          </div>
+        </div>
       );
 
     case "counselorCount":
       return (
-        <p className="flex justify-center items-center text-xl shadow  rounded py-1">
-          Total Counselors: <strong className="p-2">{counselorCount}</strong>
-        </p>
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex items-center justify-center">
+          <p className="text-sm text-gray-600 mr-2">Total Counselors:</p>
+          <p className="text-2xl font-bold text-red-700">{counselorCount}</p>
+        </div>
       );
 
     case "streamDistribution":
       return streamData.length === 0 ? (
-        <p>No data available</p>
+        <p className="text-center text-gray-500">No data available</p>
       ) : (
-        <PieChart width={500} height={350}>
-          <Pie
-            data={streamData.map((item) => ({
-              ...item,
-              name: item.name.toUpperCase(), // Capitalize stream name
-            }))}
-            cx="40%"
-            cy="50%"
-            outerRadius={130}
-            fill="#8884d8"
-            dataKey="value"
-            label
-          >
-            {streamData.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
-            ))}
-          </Pie>
-          <Tooltip />
-          <Legend layout="vertical" verticalAlign="middle" align="right" />
-        </PieChart>
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-4">
+          <PieChart width={350} height={350}>
+            <Pie
+              data={streamData.map((item) => ({
+                ...item,
+                name: item.name.toUpperCase(),
+              }))}
+              cx="50%"
+              cy="50%"
+              outerRadius={120}
+              fill="#8884d8"
+              dataKey="value"
+              label
+            >
+              {streamData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip />
+          </PieChart>
+          <div className="mt-4 lg:mt-0">
+            <Legend
+              layout="vertical"
+              verticalAlign="middle"
+              align="left"
+              wrapperStyle={{ fontSize: '14px' }}
+            />
+          </div>
+        </div>
       );
 
     default:
       return (
-        <div className="font-metropolis grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <h3 className="font-semibold ">Student Stats</h3>
-            <div className="">
-              <p>
-                Total Students: <strong>{studentStats.total}</strong>
-              </p>
-              <p>
-                Today's Students: <strong>{studentStats.today}</strong>
-              </p>
+        <div className="space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Student Stats */}
+            <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Student Stats</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="border rounded-lg p-4 text-center">
+                  <p className="text-sm text-gray-500">Total Students</p>
+                  <p className="text-2xl font-bold text-red-700 mt-1">{studentStats.total}</p>
+                </div>
+                <div className="border rounded-lg p-4 text-center">
+                  <p className="text-sm text-gray-500">Today's Students</p>
+                  <p className="text-2xl font-bold text-red-700 mt-1">{studentStats.today}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Counselor Count */}
+            <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Counselor Count</h3>
+              <div className="border rounded-lg p-4 text-center">
+                <p className="text-sm text-gray-500">Total Counselors</p>
+                <p className="text-2xl font-bold text-red-700 mt-1">{counselorCount}</p>
+              </div>
             </div>
           </div>
-
-          <div>
-            <h3 className="font-semibold">Counselor Count</h3>
-            <p>
-              Total Counselors: <strong>{counselorCount}</strong>
-            </p>
-          </div>
-          <div>
-            <h3 className="font-semibold">Stream Distribution</h3>
+          {/* Stream */}
+          <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">Stream Distribution</h3>
             {streamData.length === 0 ? (
-              <p>No data available</p>
+              <p className="text-gray-500">No data available</p>
             ) : (
               <PieChart width={300} height={200}>
                 <Pie
@@ -175,25 +184,18 @@ const AdminDashboardStats = ({ statsType = "all" }) => {
                     ...item,
                     name: item.name.toUpperCase(),
                   }))}
-                  cx="40%"
+                  cx="50%"
                   cy="50%"
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
                 >
                   {streamData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
                 <Tooltip />
-                <Legend
-                  layout="vertical"
-                  verticalAlign="middle"
-                  align="right"
-                />
+                <Legend layout="vertical" verticalAlign="middle" align="right" />
               </PieChart>
             )}
           </div>
